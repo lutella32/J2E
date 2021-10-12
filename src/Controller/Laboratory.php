@@ -68,5 +68,24 @@ class Laboratory extends AbstractController
 
     }
 
+    #[Route(path:"/robot/{identifiant}", methods: ['DELETE'])] //DELETE: supprimer, POST: envoyer, PUT: modifier quelque chose ; POSTMAN (extension navigateur) permet de choisir la methode
+    public function prendlaRoute3(EntityManagerInterface $em, int $identifiant){
+        $robot=$em->getRepository(Robot::Class)->find($identifiant);
+        $em->remove($robot);
+        $em->flush();
+
+        return new Response('ok');//->render('robot.json.twig', ['robot'=>$robot]);  //ouverture d'un fichier à la fin de cette ligne
+    }
+
+    #[Route(path:"/robot/{identifiant}", methods: ['PUT'])] //DELETE: supprimer, POST: envoyer, PUT: modifier quelque chose ; POSTMAN (extension navigateur) permet de choisir la methode
+    public function prendlaRoute4(Request $request, EntityManagerInterface $em, int $identifiant){
+
+        $data=json_decode($request->getContent());
+        $robot=$em->getRepository(Robot::Class)->find($identifiant);
+        $robot->nomTexte = $data->nom;
+        $em->flush();
+        return $this->render('robot.json.twig', ['robot'=>$robot]);
+        //return new Response('ok');//->render('robot.json.twig', ['robot'=>$robot]);  //ouverture d'un fichier à la fin de cette ligne
+    }
 
 }
