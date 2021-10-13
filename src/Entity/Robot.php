@@ -16,6 +16,7 @@ class Robot
     /**
      * @var int
      * @ORM\Column (name="id", type="integer")
+     * @ORM\GeneratedValue ()
      * @ORM\Id()
      */
     public $identifiant;

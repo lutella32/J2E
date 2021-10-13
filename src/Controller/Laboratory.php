@@ -132,11 +132,29 @@ class Laboratory extends AbstractController
         $covid=$em->getRepository(Covid::class)->find($idcovid);
         $data=json_decode($request->getContent());
 
-        $robot = new Robot($data->nomrobot,);
+        $robot = new Robot($data->nomrobot,$analyse,$covid,$marque);
         $em->persist($robot);
         $em->flush();
 
         return $this->render('robotpost.json.twig', ['robot'=>$robot]);
+    }
+    #[Route(path:"patient")]
+    public function  AffichePatient(EntityManagerInterface $em){
+        echo"<h1> Affichage des patients </h1>";
+        $repository= $this->getDoctrine()->getRepository(Robot::class);
+        $new=$repository->findall();
+        foreach( $new as $item)
+     {
+          echo "<br>".$item->Analyse->nomPatient;
+
+         if($item->Analyse->resultat==false){
+             echo " n'a pas le covid ".$item->Covid->version."</br>";}
+          if($item->Analyse->resultat==true){
+              echo "  a le covid ".$item->Covid->version."</br>";
+          }
+
+      }
+        return new Response("voici la liste de patient");
     }
 
 }
