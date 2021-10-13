@@ -19,6 +19,7 @@ class Robot
      * @ORM\Id()
      */
     public $identifiant;
+
     /**
      * @var String
      * @ORM\Column (name="Name", type="string")
@@ -45,8 +46,16 @@ class Robot
      * @ORM\JoinColumn(name="marque",referencedColumnName="idMarque")
      */
     public ?Marque $Marque;
-    public function __construct(string $nom , ?Analyse $analyse =null, ?Covid $covid=null,?Marque $marque=null){
 
+    /**
+     * Constructeur du robot
+     *
+     * @param string $nom
+     * @param Analyse|null $analyse
+     * @param Covid|null $covid
+     * @param Marque|null $marque
+     */
+    public function __construct(string $nom , ?Analyse $analyse =null, ?Covid $covid=null,?Marque $marque=null){
         $this->Nom=$nom;
         $this->Analyse=$analyse;
         $this->Covid=$covid;

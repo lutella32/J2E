@@ -18,11 +18,13 @@ class Marque
      * @ORM\Id()
      */
     public $idMarque;
+
     /**
      * @var string
      * @ORM\Column (name="nomMarque",type="string")
      */
     public $nomMarque;
+
     /**
      * @param Collection
      * @ORM\OneToMany(targetEntity="App\Entity\Robot",mappedBy="Marque",fetch="EAGER");
