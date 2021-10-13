@@ -44,16 +44,12 @@ class Laboratory extends AbstractController
         dump($new2);
         dump($new3);
         dump($new4);
+        echo "<br><a href = http://127.0.0.1:8001/demoAll > Affichage pour Robot en json </a></br>";
         return new Response("il y a ".count($new)."robot");
+
        // return new Response(" robot ".$test->Nom." j'ai ".$test->Pipette);
     }
-    #[Route(path:"demo2/{id}")]
-    public function json1(Request $request,EntityManagerInterface $em, int $id){
-        echo"<br><h1>Affichage pour Robot</h1></br>";
-       $robot=$em->getRepository(Robot::class)->find($id);
-        return $this->render('robot.json.twig',['robot'=>$robot]);
 
-    }
 
     /**
      * @param Request $request
@@ -64,12 +60,20 @@ class Laboratory extends AbstractController
     public function json2(Request $request,EntityManagerInterface $em){
         echo"<br><h1>Affichage pour Robot</h1></br>";
         $robot=$em->getRepository(Robot::class)->findAll();
+        echo "<br><a href = http://127.0.0.1:8001/demo > Affichage Humain</a></br>";
         return $this->render('robots.json.twig',['liste'=>$robot]);
 
     }
+    #[Route(path:"robot/{id}",methods :['GET'])]
+    public function json1(Request $request,EntityManagerInterface $em, int $id){
+        echo"<br><h1>Affichage pour Robot</h1></br>";
+        $robot=$em->getRepository(Robot::class)->find($id);
+        return $this->render('robot.json.twig',['robot'=>$robot]);
 
+    }
     #[Route(path:"/robot/{identifiant}", methods: ['DELETE'])] //DELETE: supprimer, POST: envoyer, PUT: modifier quelque chose ; POSTMAN (extension navigateur) permet de choisir la methode
     public function prendlaRoute3(EntityManagerInterface $em, int $identifiant){
+        echo"<br><h1>Affichage pour Robot</h1></br>";
         $robot=$em->getRepository(Robot::Class)->find($identifiant);
         $em->remove($robot);
         $em->flush();
@@ -79,12 +83,28 @@ class Laboratory extends AbstractController
 
     #[Route(path:"/robot/{identifiant}", methods: ['PUT'])] //DELETE: supprimer, POST: envoyer, PUT: modifier quelque chose ; POSTMAN (extension navigateur) permet de choisir la methode
     public function prendlaRoute4(Request $request, EntityManagerInterface $em, int $identifiant){
-
+        echo"<br><h1>Affichage pour Robot</h1></br>";
         $data=json_decode($request->getContent());
         $robot=$em->getRepository(Robot::Class)->find($identifiant);
-        $robot->nomTexte = $data->nom;
+        $robot->Nom = $data->nomrobot;
         $em->flush();
+
         return $this->render('robot.json.twig', ['robot'=>$robot]);
+        //return new Response('ok');//->render('robot.json.twig', ['robot'=>$robot]);  //ouverture d'un fichier à la fin de cette ligne
+    }
+    #[Route(path:"/robot/{idAnalyse}/{idMarque}/{idcovid}", methods: ['POST'])] //DELETE: supprimer, POST: envoyer, PUT: modifier quelque chose ; POSTMAN (extension navigateur) permet de choisir la methode
+    public function prendlaRoute5(Request $request, EntityManagerInterface $em, int $idAnalyse,int $idMarque,int $idcovid){
+        echo"<br><h1>Affichage pour Robot</h1></br>";
+        $analyse=$em->getRepository(Analyse::class)->find($idAnalyse);
+        $marque=$em->getRepository(Marque::class)->find($idMarque);
+        $covid=$em->getRepository(Covid::class)->find($idcovid);
+        $data=json_decode($request->getContent());
+      //  $robot=$em->getRepository(Robot::Class)->find($identifiant);
+        $robot = new Robot($data->nomrobot,);
+        $em->persist($robot);
+        $em->flush();
+
+        return $this->render('robotpost.json.twig', ['robot'=>$robot]);
         //return new Response('ok');//->render('robot.json.twig', ['robot'=>$robot]);  //ouverture d'un fichier à la fin de cette ligne
     }
 

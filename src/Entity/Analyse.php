@@ -34,4 +34,9 @@ class Analyse
      * @ORM\OneToMany(targetEntity="App\Entity\Robot",mappedBy="Analyse",fetch="EAGER");
      */
     public \Doctrine\Common\Collections\Collection $listeAnalyse;
+    /**
+     * @var string
+     * @ORM\Column (name="nomAnalyse",type="string");
+     */
+    public $nomAnalyse;
 }
